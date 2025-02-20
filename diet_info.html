@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* General Styles */
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -18,16 +17,15 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            align-items: center; /* Center content horizontally */
+            align-items: center;
         }
 
         .container {
             width: 90%;
             max-width: 1200px;
-            margin: 20px auto; /* Center container with margin */
+            margin: 20px auto;
         }
 
-        /* Header Styles */
         header {
             background-color: #fff;
             padding: 20px 0;
@@ -37,13 +35,12 @@
         }
 
         header h1 {
-            color: #2e7d32; /* Green accent */
+            color: #2e7d32;
             margin: 0;
             font-weight: 600;
-            font-size: 2.5em; /* Larger title */
+            font-size: 2.5em;
         }
 
-        /* Search Bar Styles */
         #search-bar {
             width: 100%;
             padding: 12px;
@@ -51,22 +48,22 @@
             border-radius: 8px;
             margin-bottom: 20px;
             font-size: 16px;
-            box-sizing: border-box; /* Prevent padding from increasing width */
+            box-sizing: border-box;
         }
 
         #search-bar:focus {
-            border-color: #2e7d32; /* Highlight on focus */
+            border-color: #2e7d32;
             outline: none;
             box-shadow: 0 0 8px rgba(46, 125, 50, 0.2);
         }
 
-        /* Flashcard Area Styles */
         #flashcard-area {
             display: flex;
             justify-content: center;
             align-items: center;
             margin-bottom: 20px;
             width: 100%;
+            min-height: 250px;
         }
 
         .flashcard-container {
@@ -81,6 +78,7 @@
             height: 100%;
             transition: transform 0.8s;
             transform-style: preserve-3d;
+            cursor: pointer;
         }
 
         .flashcard.flipped {
@@ -96,11 +94,11 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border-radius: 12px; /* More rounded corners */
+            border-radius: 12px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
             padding: 20px;
             text-align: center;
-            font-size: 18px; /* Larger font size */
+            font-size: 18px;
             box-sizing: border-box;
         }
 
@@ -111,12 +109,11 @@
         }
 
         .flashcard-back {
-            background-color: #f0f4c3; /* Soft yellow accent */
-            color: #558b2f; /* Darker green accent */
+            background-color: #f0f4c3;
+            color: #558b2f;
             transform: rotateY(180deg);
         }
 
-        /* Button Styles */
         .button-container {
             display: flex;
             justify-content: center;
@@ -125,33 +122,31 @@
 
         button {
             padding: 14px 28px;
-            font-size: 18px; /* Larger font size */
-            background-color: #2e7d32; /* Green accent */
+            font-size: 18px;
+            background-color: #2e7d32;
             color: white;
             border: none;
-            border-radius: 8px; /* More rounded corners */
+            border-radius: 8px;
             cursor: pointer;
             margin: 0 10px;
             transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #1b5e20; /* Darker green on hover */
+            background-color: #1b5e20;
         }
 
         button:disabled {
-            background-color: #9ccc65; /* Lighter green when disabled */
+            background-color: #9ccc65;
             cursor: not-allowed;
         }
 
-        /* No Results Message */
         .no-results {
             color: #777;
             font-style: italic;
             margin-top: 10px;
         }
 
-        /* Footer Styles */
         footer {
             text-align: center;
             margin-top: auto;
@@ -160,10 +155,9 @@
             color: #777;
             font-size: 0.9em;
             width: 100%;
-            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05); /* Shadow on top of the footer */
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .container {
                 width: 95%;
@@ -197,16 +191,13 @@
                 font-size: 14px;
             }
         }
-
     </style>
 </head>
 <body>
-
     <header>
         <div class="container">
             <h1>NutriFlash</h1>
             <p>Your Food Facts Hub</p>
-
         </div>
     </header>
 
@@ -219,7 +210,7 @@
 
         <div class="button-container">
             <button onclick="showPrevious()" id="prev-button" aria-label="Previous Card" disabled>Previous</button>
-            <button onclick="flipCard()" aria-label="Flip Card">Flip Card</button>
+            <button onclick="flipCard()" id="flip-button" aria-label="Flip Card">Flip Card</button>
             <button onclick="showNext()" id="next-button" aria-label="Next Card" disabled>Next</button>
         </div>
     </div>
@@ -229,7 +220,7 @@
     </footer>
 
     <script>
-         const foodData = [
+        const foodData = [
             { name: "Acerola", scientificName: "Malpighia emarginata", nutrients: "vitamin C" },
             { name: "Almond", scientificName: "Prunus dulcis", nutrients: "riboflavin, vitamin E, calcium, iron, magnesium, phosphorous, potassium, zinc, copper, manganese" },
             { name: "Apple", scientificName: "Malus domestica", nutrients: "vitamin C" },
@@ -381,14 +372,12 @@
 
         let currentCardIndex = 0;
         let isFlipped = false;
-        let filteredFoodData = [...foodData]; // Start with all data
+        let filteredFoodData = [...foodData];
         const flashcardArea = document.getElementById("flashcard-area");
         const searchBar = document.getElementById("search-bar");
         const noResultsMessage = document.getElementById("no-results-message");
         const prevButton = document.getElementById("prev-button");
         const nextButton = document.getElementById("next-button");
-
-
 
         function createFlashcard(food) {
             const cardContainer = document.createElement("div");
@@ -403,7 +392,10 @@
 
             const back = document.createElement("div");
             back.classList.add("flashcard-back");
-            back.innerHTML = <strong>Scientific Name:</strong> ${food.scientificName}<br><br><strong>Nutrients:</strong> ${food.nutrients};
+            back.innerHTML = `
+                <strong>Scientific Name:</strong> ${food.scientificName}<br><br>
+                <strong>Nutrients:</strong> ${food.nutrients}
+            `;
 
             card.appendChild(front);
             card.appendChild(back);
@@ -413,28 +405,27 @@
         }
 
         function displayCard() {
-            flashcardArea.innerHTML = ""; // Clear existing card
+            flashcardArea.innerHTML = "";
 
-             if (filteredFoodData.length === 0) {
-                noResultsMessage.style.display = "block"; // Show "No results" message
+            if (filteredFoodData.length === 0) {
+                noResultsMessage.style.display = "block";
                 prevButton.disabled = true;
                 nextButton.disabled = true;
                 return;
-            } else {
-                noResultsMessage.style.display = "none"; // Hide message if there are results
-                 prevButton.disabled = (currentCardIndex <= 0);
-                 nextButton.disabled = (currentCardIndex >= filteredFoodData.length -1 );
-
-
             }
+
+            noResultsMessage.style.display = "none";
+            prevButton.disabled = (currentCardIndex <= 0);
+            nextButton.disabled = (currentCardIndex >= filteredFoodData.length - 1);
 
             const card = createFlashcard(filteredFoodData[currentCardIndex]);
             flashcardArea.appendChild(card);
-            isFlipped = false;
 
+            // Maintain flip state when navigating
+            if (isFlipped) {
+                card.querySelector(".flashcard").classList.add("flipped");
+            }
         }
-
-
 
         function flipCard() {
             const card = flashcardArea.querySelector(".flashcard");
@@ -445,40 +436,36 @@
         }
 
         function showNext() {
-
-             if (currentCardIndex < filteredFoodData.length - 1) {
-                 currentCardIndex++;
-                 displayCard();
-             }
+            if (currentCardIndex < filteredFoodData.length - 1) {
+                currentCardIndex++;
+                displayCard();
+            }
         }
 
         function showPrevious() {
-
-             if (currentCardIndex > 0) {
-                 currentCardIndex--;
-                 displayCard();
-             }
-
+            if (currentCardIndex > 0) {
+                currentCardIndex--;
+                displayCard();
+            }
         }
 
         function filterCards(searchTerm) {
-           filteredFoodData = foodData.filter(food =>
+            filteredFoodData = foodData.filter(food =>
                 food.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 food.scientificName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 food.nutrients.toLowerCase().includes(searchTerm.toLowerCase())
             );
-            currentCardIndex = 0; // Reset to the first filtered card
-            displayCard(); // Redisplay the card(s)
+            currentCardIndex = 0;
+            isFlipped = false; // Reset flip state on new search
+            displayCard();
         }
 
         searchBar.addEventListener("input", function() {
             filterCards(searchBar.value);
         });
 
-
         // Initial display
-        filterCards(""); // Show all cards initially
+        filterCards("");
     </script>
-
 </body>
 </html>
