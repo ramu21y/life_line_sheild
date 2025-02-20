@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriFlash - Your Food Facts Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center; /* Center content horizontally */
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto; /* Center container with margin */
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            width: 100%;
+        }
+
+        header h1 {
+            color: #2e7d32; /* Green accent */
+            margin: 0;
+            font-weight: 600;
+            font-size: 2.5em; /* Larger title */
+        }
+
+        /* Search Bar Styles */
+        #search-bar {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            box-sizing: border-box; /* Prevent padding from increasing width */
+        }
+
+        #search-bar:focus {
+            border-color: #2e7d32; /* Highlight on focus */
+            outline: none;
+            box-shadow: 0 0 8px rgba(46, 125, 50, 0.2);
+        }
+
+        /* Flashcard Area Styles */
+        #flashcard-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .flashcard-container {
+            width: 350px;
+            height: 250px;
+            perspective: 1000px;
+        }
+
+        .flashcard {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px; /* More rounded corners */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            font-size: 18px; /* Larger font size */
+            box-sizing: border-box;
+        }
+
+        .flashcard-front {
+            background-color: #fff;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .flashcard-back {
+            background-color: #f0f4c3; /* Soft yellow accent */
+            color: #558b2f; /* Darker green accent */
+            transform: rotateY(180deg);
+        }
+
+        /* Button Styles */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 14px 28px;
+            font-size: 18px; /* Larger font size */
+            background-color: #2e7d32; /* Green accent */
+            color: white;
+            border: none;
+            border-radius: 8px; /* More rounded corners */
+            cursor: pointer;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #1b5e20; /* Darker green on hover */
+        }
+
+        button:disabled {
+            background-color: #9ccc65; /* Lighter green when disabled */
+            cursor: not-allowed;
+        }
+
+        /* No Results Message */
+        .no-results {
+            color: #777;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            margin-top: auto;
+            padding: 20px;
+            background-color: #fff;
+            color: #777;
+            font-size: 0.9em;
+            width: 100%;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05); /* Shadow on top of the footer */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+
+            .flashcard-container {
+                width: 90%;
+                max-width: 300px;
+                height: 220px;
+            }
+
+            button {
+                padding: 12px 24px;
+                font-size: 16px;
+                margin: 0 5px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .flashcard-front, .flashcard-back {
+                font-size: 16px;
+                padding: 15px;
+            }
+
+            button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>NutriFlash</h1>
+            <p>Your Food Facts Hub</p>
+
+        </div>
+    </header>
+
+    <div class="container">
+        <input type="text" id="search-bar" placeholder="Search for food or nutrient...">
+
+        <div id="flashcard-area">
+            <div class="no-results" id="no-results-message" style="display: none;">No matching food found.</div>
+        </div>
+
+        <div class="button-container">
+            <button onclick="showPrevious()" id="prev-button" aria-label="Previous Card" disabled>Previous</button>
+            <button onclick="flipCard()" aria-label="Flip Card">Flip Card</button>
+            <button onclick="showNext()" id="next-button" aria-label="Next Card" disabled>Next</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 NutriFlash. Your source for quick nutrition facts. Data from NatureClaim.</p>
+    </footer>
+
+    <script>
+         const foodData = [
+            { name: "Acerola", scientificName: "Malpighia emarginata", nutrients: "vitamin C" },
+            { name: "Almond", scientificName: "Prunus dulcis", nutrients: "riboflavin, vitamin E, calcium, iron, magnesium, phosphorous, potassium, zinc, copper, manganese" },
+            { name: "Apple", scientificName: "Malus domestica", nutrients: "vitamin C" },
+            { name: "Apricot", scientificName: "Prunus armeniaca", nutrients: "vitamin C, vitamin A" },
+            { name: "Artichoke", scientificName: "Cynara cardunculus", nutrients: "vitamin C, copper" },
+            { name: "Artichoke Cooked", scientificName: "Cynara cardunculus", nutrients: "folate" },
+            { name: "Arugula", scientificName: "Eruca vesicaria", nutrients: "folate, vitamin K" },
+            { name: "Asian Pear", scientificName: "Pyrus pyrifolia", nutrients: "vitamin C, vitamin K" },
+            { name: "Asparagus", scientificName: "Asparagus officinalis", nutrients: "vitamin K" },
+            { name: "Baby Carrot", scientificName: "Daucus carota", nutrients: "vitamin A" },
+            { name: "Bamboo Shoot Cooked", scientificName: "Phyllostachys edulis", nutrients: "potassium" },
+            { name: "Banana", scientificName: "Musa acuminata", nutrients: "vitamin B6" },
+            { name: "Beetroot", scientificName: "Beta vulgaris", nutrients: "folate, betaine" },
+            { name: "Bitter Melon", scientificName: "Momordica charantia", nutrients: "vitamin C" },
+            { name: "Bitter Melon Cooked", scientificName: "Momordica charantia", nutrients: "vitamin C, lutein and zeaxanthin" },
+            { name: "Black Currant", scientificName: "Ribes nigrum", nutrients: "vitamin C" },
+            { name: "Black Mulberry", scientificName: "Morus nigra", nutrients: "vitamin C" },
+            { name: "Black Walnut", scientificName: "Juglans nigra", nutrients: "vitamin B6, magnesium, phosphorus, zinc, copper, manganese, selenium" },
+            { name: "Blackberry", scientificName: "Rubus", nutrients: "manganese" },
+            { name: "Blueberry", scientificName: "Vaccinium", nutrients: "vitamin K" },
+            { name: "Breadfruit", scientificName: "Artocarpus altilis", nutrients: "vitamin C" },
+            { name: "Broccoli", scientificName: "Brassica oleracea", nutrients: "vitamin C, vitamin K" },
+            { name: "Buckwheat", scientificName: "Fagopyrum esculentum", nutrients: "riboflavin, niacin, magnesium, phosphorous, copper, manganese" },
+            { name: "Buckwheat Roasted Cooked", scientificName: "Fagopyrum esculentum", nutrients: "copper, manganese" },
+            { name: "Buckwheat Roasted Dried", scientificName: "Fagopyrum esculentum", nutrients: "niacin, magnesium, phosphorous, copper, manganese" },
+            { name: "Calabash", scientificName: "Lagenaria siceraria", nutrients: "vitamin C" },
+            { name: "Calabash Cooked", scientificName: "Lagenaria siceraria", nutrients: "vitamin C" },
+            { name: "California Avocado", scientificName: "Persea americana", nutrients: "pantothenic acid, folate" },
+            { name: "Cantaloupe", scientificName: "Cucumis melo", nutrients: "vitamin C" },
+            { name: "Carrot", scientificName: "Daucus carota", nutrients: "vitamin A" },
+            { name: "Cashew Nut", scientificName: "Anacardium occidentale", nutrients: "thiamin, vitamin B6, vitamin K, iron, magnesium, phosphorous, zinc, copper, manganese, selenium" },
+            { name: "Cauliflower", scientificName: "Brassica oleracea", nutrients: "vitamin C" },
+            { name: "Celery", scientificName: "Apium graveolens", nutrients: "vitamin K" },
+            { name: "Chayote", scientificName: "Sechium edule", nutrients: "folate" },
+            { name: "Cherimoya", scientificName: "Annona cherimola", nutrients: "vitamin C, vitamin B6" },
+            { name: "Chia Seed", scientificName: "Salvia hispanica", nutrients: "fiber, omega-3, thiamin, niacin, calcium, iron, magnesium, phosphorous, copper, manganese, selenium" },
+            { name: "Clementine", scientificName: "Citrus clementina", nutrients: "vitamin C" },
+            { name: "Cocoa Powder Unsweetened", scientificName: "Theobroma cacao", nutrients: "fiber, iron, magnesium, phosphorus, zinc, copper, manganese, caffeine, theobromine" },
+            { name: "Coconut Water", scientificName: "Cocos nucifera", nutrients: "magnesium, manganese" },
+            { name: "Cranberry", scientificName: "Vaccinium macrocarpon", nutrients: "vitamin C, flavonoids" },
+            { name: "Crookneck Squash", scientificName: "Cucurbita pepo", nutrients: "vitamin C" },
+            { name: "Currant", scientificName: "Ribes rubrum", nutrients: "vitamin C" },
+            { name: "Custard Apple", scientificName: "Annona reticulata", nutrients: "vitamin C" },
+            { name: "Durian", scientificName: "Durio zibethinus", nutrients: "thiamin" },
+            { name: "Elderberry", scientificName: "Sambucus nigra", nutrients: "vitamin C, flavonoids" },
+            { name: "Endive", scientificName: "Cichorium endivia", nutrients: "pantothenic acid, folate, vitamin K, manganese" },
+            { name: "English Walnut", scientificName: "Juglans regia", nutrients: "thiamin, vitamin B6, folate, magnesium, phosphorus, zinc, copper, manganese" },
+            { name: "Feijoa", scientificName: "Feijoa sellowiana", nutrients: "vitamin C" },
+            { name: "Fenugreek Seed", scientificName: "Trigonella foenum-graecum", nutrients: "fiber, thiamin, riboflavin, vitamin B6, iron, magnesium, copper, manganese" },
+            { name: "Fig", scientificName: "Ficus carica", nutrients: "phosphorous" },
+            { name: "Fireweed Leaf", scientificName: "Chamaenerion angustifolium", nutrients: "niacin, pantothenic acid, vitamin B6, folate, calcium, magnesium, copper, manganese" },
+            { name: "Flaxseed", scientificName: "Linum usitatissimum", nutrients: "fiber, omega-3, thiamin, vitamin B6, iron, magnesium, phosphorus, zinc, copper, manganese, selenium" },
+            { name: "Florida Avocado", scientificName: "Persea americana", nutrients: "vitamin C, pantothenic acid" },
+            { name: "Garlic", scientificName: "Allium sativum", nutrients: "vitamin C, vitamin B6, manganese, selenium" },
+            { name: "Ginger", scientificName: "Zingiber officinale", nutrients: "potassium" },
+            { name: "Goji Berry Dried", scientificName: "Lycium barbarum / Lycium chinense", nutrients: "vitamin C, vitamin A, iron" },
+            { name: "Golden Kiwifruit", scientificName: "Actinidia chinensis", nutrients: "vitamin C" },
+            { name: "Goldenberry", scientificName: "Physalis peruviana", nutrients: "vitamin C" },
+            { name: "Gooseberry", scientificName: "Ribes", nutrients: "vitamin C" },
+            { name: "Grape", scientificName: "Vitis vinifera", nutrients: "copper" },
+            { name: "Grapefruit", scientificName: "Citrus paradisi", nutrients: "vitamin C" },
+            { name: "Green Bell Pepper", scientificName: "Capsicum annuum", nutrients: "vitamin C" },
+            { name: "Green Cabbage", scientificName: "Brassica oleracea", nutrients: "vitamin C, vitamin K" },
+            { name: "Green Kiwifruit", scientificName: "Actinidia deliciosa", nutrients: "vitamin C, vitamin K" },
+            { name: "Green Pea", scientificName: "Pisum sativum", nutrients: "vitamin C, vitamin K, manganese" },
+            { name: "Green Tomato", scientificName: "Solanum lycopersicum", nutrients: "vitamin C" },
+            { name: "Guava", scientificName: "Psidium guajava", nutrients: "vitamin C" },
+            { name: "Hemp Seed", scientificName: "Cannabis sativa", nutrients: "thiamin, niacin, vitamin B6, folate, iron, magnesium, phosphorus, potassium, zinc, copper, manganese" },
+            { name: "Honeydew Melon", scientificName: "Cucumis melo", nutrients: "vitamin C" },
+            { name: "Horseradish", scientificName: "Armoracia rusticana", nutrients: "vitamin C" },
+            { name: "Jackfruit", scientificName: "Artocarpus heterophyllus", nutrients: "vitamin C" },
+            { name: "Java Plum", scientificName: "Syzygium cumini", nutrients: "vitamin C" },
+            { name: "Jerusalem Artichoke", scientificName: "Helianthus tuberosus", nutrients: "iron" },
+            { name: "Jicama", scientificName: "Pachyrhizus erosus", nutrients: "vitamin C" },
+            { name: "Kale", scientificName: "Brassica oleracea", nutrients: "vitamin C, riboflavin, vitamin A, lutein and zeaxanthin, vitamin K, calcium, manganese" },
+            { name: "Kohlrabi", scientificName: "Brassica oleracea", nutrients: "vitamin C" },
+            { name: "Kumquat", scientificName: "Citrus japonica", nutrients: "vitamin C" },
+            { name: "Leek", scientificName: "Allium ampeloprasum", nutrients: "vitamin C, vitamin K, manganese" },
+            { name: "Lemon", scientificName: "Citrus limon", nutrients: "vitamin C" },
+            { name: "Lettuce", scientificName: "Lactuca sativa", nutrients: "vitamin A, vitamin K" },
+            { name: "Lima Bean", scientificName: "Phaseolus lunatus", nutrients: "vitamin C, manganese" },
+            { name: "Lime", scientificName: "Citrus latifolia", nutrients: "vitamin C" },
+            { name: "Longan", scientificName: "Dimocarpus longan", nutrients: "vitamin C" },
+            { name: "Loquat", scientificName: "Eriobotrya japonica", nutrients: "vitamin A" },
+            { name: "Lychee", scientificName: "Litchi chinensis", nutrients: "vitamin C" },
+            { name: "Macadamia Nut", scientificName: "Macadamia", nutrients: "phytosterols, thiamin, magnesium, phosphorous, copper, manganese" },
+            { name: "Mamey Sapote", scientificName: "Pouteria sapota", nutrients: "vitamin C, vitamin B6" },
+            { name: "Mammy Apple", scientificName: "Mammea americana", nutrients: "vitamin C" },
+            { name: "Mango", scientificName: "Mangifera indica", nutrients: "vitamin C" },
+            { name: "Moringa Leaf", scientificName: "Moringa oleifera", nutrients: "vitamin C, riboflavin, vitamin B6, vitamin A, lutein and zeaxanthin, manganese" },
+            { name: "Moringa Pod", scientificName: "Moringa oleifera", nutrients: "vitamin C" },
+            { name: "Nectarine", scientificName: "Prunus persica", nutrients: "vitamin C" },
+            { name: "Okra", scientificName: "Abelmoschus esculentus", nutrients: "vitamin C, vitamin K, manganese" },
+            { name: "Onion", scientificName: "Allium cepa", nutrients: "vitamin C" },
+            { name: "Orange", scientificName: "Citrus sinensis", nutrients: "vitamin C" },
+            { name: "Orange Tomato", scientificName: "Solanum lycopersicum", nutrients: "vitamin C" },
+            { name: "Papaya", scientificName: "Carica papaya", nutrients: "vitamin C" },
+            { name: "Parsnip", scientificName: "Pastinaca sativa", nutrients: "vitamin C, vitamin K, manganese" },
+            { name: "Passion Fruit", scientificName: "Passiflora edulis", nutrients: "vitamin C" },
+            { name: "Paw Paw", scientificName: "Asimina triloba", nutrients: "vitamin C, iron, magnesium, copper, manganese" },
+            { name: "Peach", scientificName: "Prunus persica", nutrients: "vitamin C" },
+            { name: "Peanut", scientificName: "Arachis hypogaea", nutrients: "thiamin, niacin, folate, vitamin E, iron, magnesium, phosphorous, potassium, zinc, copper, manganese" },
+            { name: "Persimmon", scientificName: "Diospyros kaki", nutrients: "copper, manganese" },
+            { name: "Pineapple", scientificName: "Ananas comosus", nutrients: "vitamin C, manganese" },
+            { name: "Pistachio", scientificName: "Pistacia vera", nutrients: "thiamin, vitamin B6, iron, magnesium, phosphorous, potassium, copper, manganese" },
+            { name: "Plum", scientificName: "Prunus", nutrients: "vitamin C" },
+            { name: "Pomegranate", scientificName: "Punica granatum", nutrients: "vitamin K" },
+            { name: "Pomelo", scientificName: "Citrus maxima", nutrients: "vitamin C" },
+            { name: "Potato", scientificName: "Solanum tuberosum", nutrients: "vitamin C" },
+            { name: "Pumpkin", scientificName: "Cucurbita pepo", nutrients: "vitamin A" },
+            { name: "Pumpkin Seed", scientificName: "Cucurbita pepo", nutrients: "niacin, iron, magnesium, phosphorous, potassium, zinc, copper, manganese" },
+            { name: "Purslane", scientificName: "Portulaca oleracea", nutrients: "vitamin A" },
+            { name: "Quince", scientificName: "Cydonia oblonga", nutrients: "vitamin C" },
+            { name: "Quinoa", scientificName: "Chenopodium quinoa", nutrients: "thiamin, vitamin B6, folate, betaine, iron, magnesium, phosphorus, zinc, copper, manganese" },
+            { name: "Quinoa Cooked", scientificName: "Chenopodium quinoa", nutrients: "manganese" },
+            { name: "Radish", scientificName: "Raphanus raphanistrum", nutrients: "vitamin C" },
+            { name: "Raspberry", scientificName: "Rubus", nutrients: "vitamin C, manganese" },
+            { name: "Red Bell Pepper", scientificName: "Capsicum annuum", nutrients: "vitamin C" },
+            { name: "Red Cabbage", scientificName: "Brassica oleracea", nutrients: "vitamin C, vitamin K" },
+            { name: "Red Tomato", scientificName: "Solanum lycopersicum", nutrients: "vitamin C" },
+            { name: "Rose Apple", scientificName: "Syzygium jambos", nutrients: "vitamin C" },
+            { name: "Rose Hip", scientificName: "Rosa", nutrients: "fiber, vitamin C, vitamin E, manganese" },
+            { name: "Rutabaga", scientificName: "Brassica napus", nutrients: "vitamin C" },
+            { name: "Shallot", scientificName: "Allium cepa", nutrients: "vitamin B6" },
+            { name: "Soursop", scientificName: "Annona muricata", nutrients: "vitamin C" },
+            { name: "Stinging Nettle Cooked", scientificName: "Urtica dioica", nutrients: "vitamin A, lutein and zeaxanthin, vitamin K, calcium, manganese" },
+            { name: "Strawberry", scientificName: "Fragaria", nutrients: "vitamin C, manganese" },
+            { name: "Strawberry Guava", scientificName: "Psidium cattleyanum", nutrients: "vitamin C" },
+            { name: "Sugar Apple", scientificName: "Annona squamosa", nutrients: "vitamin C" },
+            { name: "Surinam Cherry", scientificName: "Eugenia uniflora", nutrients: "vitamin C" },
+            { name: "Sweet Cherry", scientificName: "Prunus avium", nutrients: "vitamin C" },
+            { name: "Sweet Leaf", scientificName: "Sauropus androgynus", nutrients: "vitamin C, riboflavin, folate, vitamin A, lutein and zeaxanthin, magnesium" },
+            { name: "Sweet Potato", scientificName: "Ipomoea batatas", nutrients: "vitamin A" },
+            { name: "Sweet Potato Leaf", scientificName: "Ipomoea batatas", nutrients: "riboflavin, vitamin K" },
+            { name: "Tamarind", scientificName: "Tamarindus indica", nutrients: "thiamin, magnesium" },
+            { name: "Tangerine", scientificName: "Citrus tangerina", nutrients: "vitamin C" },
+            { name: "Tart Cherry", scientificName: "Prunus cerasus", nutrients: "vitamin C" },
+            { name: "Tomatillo", scientificName: "Physalis philadelphica", nutrients: "vitamin C" },
+            { name: "Turnip", scientificName: "Brassica rapa", nutrients: "vitamin C" },
+            { name: "Watercress", scientificName: "Nasturtium officinale", nutrients: "vitamin C, vitamin K" },
+            { name: "Watermelon", scientificName: "Citrullus lanatus", nutrients: "vitamin C" },
+            { name: "White Mushroom", scientificName: "Agaricus bisporus", nutrients: "riboflavin" },
+            { name: "Wild Blueberry", scientificName: "Vaccinium ovalifolium", nutrients: "vitamin C, riboflavin, vitamin K, manganese" },
+            { name: "Yam", scientificName: "Dioscorea", nutrients: "vitamin C, potassium, manganese" },
+            { name: "Yellow Bell Pepper", scientificName: "Capsicum annuum", nutrients: "vitamin C" },
+            { name: "Yellow Tomato", scientificName: "Solanum lycopersicum", nutrients: "vitamin C" },
+            { name: "Zucchini", scientificName: "Cucurbita pepo", nutrients: "vitamin C" }
+        ];
+
+        let currentCardIndex = 0;
+        let isFlipped = false;
+        let filteredFoodData = [...foodData]; // Start with all data
+        const flashcardArea = document.getElementById("flashcard-area");
+        const searchBar = document.getElementById("search-bar");
+        const noResultsMessage = document.getElementById("no-results-message");
+        const prevButton = document.getElementById("prev-button");
+        const nextButton = document.getElementById("next-button");
+
+
+
+        function createFlashcard(food) {
+            const cardContainer = document.createElement("div");
+            cardContainer.classList.add("flashcard-container");
+
+            const card = document.createElement("div");
+            card.classList.add("flashcard");
+
+            const front = document.createElement("div");
+            front.classList.add("flashcard-front");
+            front.textContent = food.name;
+
+            const back = document.createElement("div");
+            back.classList.add("flashcard-back");
+            back.innerHTML = <strong>Scientific Name:</strong> ${food.scientificName}<br><br><strong>Nutrients:</strong> ${food.nutrients};
+
+            card.appendChild(front);
+            card.appendChild(back);
+            cardContainer.appendChild(card);
+
+            return cardContainer;
+        }
+
+        function displayCard() {
+            flashcardArea.innerHTML = ""; // Clear existing card
+
+             if (filteredFoodData.length === 0) {
+                noResultsMessage.style.display = "block"; // Show "No results" message
+                prevButton.disabled = true;
+                nextButton.disabled = true;
+                return;
+            } else {
+                noResultsMessage.style.display = "none"; // Hide message if there are results
+                 prevButton.disabled = (currentCardIndex <= 0);
+                 nextButton.disabled = (currentCardIndex >= filteredFoodData.length -1 );
+
+
+            }
+
+            const card = createFlashcard(filteredFoodData[currentCardIndex]);
+            flashcardArea.appendChild(card);
+            isFlipped = false;
+
+        }
+
+
+
+        function flipCard() {
+            const card = flashcardArea.querySelector(".flashcard");
+            if (card) {
+                card.classList.toggle("flipped");
+                isFlipped = !isFlipped;
+            }
+        }
+
+        function showNext() {
+
+             if (currentCardIndex < filteredFoodData.length - 1) {
+                 currentCardIndex++;
+                 displayCard();
+             }
+        }
+
+        function showPrevious() {
+
+             if (currentCardIndex > 0) {
+                 currentCardIndex--;
+                 displayCard();
+             }
+
+        }
+
+        function filterCards(searchTerm) {
+           filteredFoodData = foodData.filter(food =>
+                food.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                food.scientificName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                food.nutrients.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            currentCardIndex = 0; // Reset to the first filtered card
+            displayCard(); // Redisplay the card(s)
+        }
+
+        searchBar.addEventListener("input", function() {
+            filterCards(searchBar.value);
+        });
+
+
+        // Initial display
+        filterCards(""); // Show all cards initially
+    </script>
+
+</body>
+</html>
