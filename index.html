@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIFELINE SHIELD - Enhanced Healthcare & Wellness</title>
+    <style>
+        /* Enhanced Styling with Updated Color Scheme & Centered Content */
+        :root {
+            --primary-color: #6a5acd; /* Slate Blue */
+            --secondary-color: #dda0dd; /* Plum */
+            --light-color: #f8f8ff; /* Ghost White */
+            --dark-color: #191970; /* Midnight Blue */
+            --accent-color: #ffc0cb; /* Pink */
+            --box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+            --border-radius: 10px;
+            --transition: all 0.3s ease-in-out;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+            text-align: center; /* Default center alignment */
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            text-align: center; /* Center align items in the navbar */
+        }
+
+        .logo {
+            display: inline-block; /* Removes float */
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: inline-block; /* Centers nav links */
+        }
+
+        .nav-links li {
+          /*  float: left; */
+              float: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .nav-links li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 17px;
+            border-radius: var(--border-radius);
+        }
+
+        .nav-links li a:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section Styles */
+        .hero {
+            background-color: var(--light-color);
+            padding: 80px 20px;
+            text-align: center;
+            background-image: url('https://images.unsplash.com/photo-1532938314502-2cb727cefa47?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            position: relative;
+            z-index: 1;
+            box-shadow: var(--box-shadow);
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(244, 46, 46, 0.4);
+            z-index: -1;
+            border-radius: var(--border-radius);
+        }
+
+        .hero h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px #000;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.6em;
+            font-weight: 300;
+            text-shadow: 1px 1px 3px #000;
+        }
+
+        .cta-button {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+            padding: 18px 40px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 18px;
+            margin-top: 30px;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            box-shadow: var(--box-shadow);
+            font-weight: bold;
+        }
+
+        .cta-button:hover {
+            background-color: #ffb3c6;
+            transform: scale(1.05);
+        }
+
+        /* Sections - Services, Chatbot, Hospital Tracker, etc. */
+        .services,
+        .chatbot,
+        .hospital-tracker,
+        .memory-game,
+        .contact,
+        .diet {
+            padding: 60px 20px;
+            text-align: center;
+            background-color: #fff;
+            margin-bottom: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .services h2,
+        .chatbot h2,
+        .hospital-tracker h2,
+        .memory-game h2,
+        .contact h2,
+        .diet h2 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        /* Service Cards Styles */
+        .service-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+             text-align: center; /* Center content within the container */
+        }
+
+        .service-card {
+            background-color: var(--light-color);
+            border: 1px solid #ddd;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            transition: var(--transition);
+             margin: 0 auto; /* Add automatic left and right margins */
+              display: inline-block;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-card h3 {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+
+        .service-card p {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        /* Button Styles */
+        .chatbot-toggle,
+        #find-hospital {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            transition: var(--transition);
+            box-shadow: var(--box-shadow);
+        }
+
+        .chatbot-toggle:hover,
+        #find-hospital:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Hospital Tracker Styles */
+        #hospital-list {
+            margin-top: 20px;
+            text-align: left;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            background-color: #fff;
+            font-size: 1.1em;
+        }
+
+        #hospital-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #hospital-list li {
+            padding: 12px 16px;
+            border-bottom: 1px solid #eee;
+        }
+
+        #hospital-list li:last-child {
+            border-bottom: none;
+        }
+
+        #hospital-list a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        #hospital-list a:hover {
+            text-decoration: underline;
+            color: var(--secondary-color);
+        }
+
+        /* Memory Game Styles */
+        .memory-game {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            text-align: center; /* Center-align content in the memory game section */
+        }
+
+        .game-container {
+            width: 800px;
+            height: 600px;
+            margin: 0 auto; /* Auto margins for horizontal centering */
+            display: flex;
+            flex-wrap: wrap;
+            perspective: 1000px;
+            justify-content: center;
+        }
+
+        .memory-card {
+            width: calc(25% - 10px);
+            height: calc(33.333% - 10px);
+            margin: 5px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .memory-card:active {
+            transform: scale(0.95);
+            transition: transform 0.2s;
+        }
+
+        .memory-card.flip {
+            transform: rotateY(180deg);
+        }
+
+        .front-face,
+        .back-face {
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            position: absolute;
+            border-radius: 10px;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            color: var(--primary-color);
+            background-color: #fff;
+        }
+
+        .front-face {
+            transform: rotateY(180deg);
+        }
+
+        .back-face {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .front-face img,
+        .back-face img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        /* Congratulations Styles */
+        #congratulations {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding-top: 20%;
+            font-size: 3em;
+            font-weight: bold;
+            z-index: 1000;
+            display: none; /* Initially hidden */
+        }
+
+        /* Fireworks Styles */
+        #fireworks-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Allows clicks to pass through */
+        }
+
+        .firework {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: gold; /* Example color */
+        }
+
+        /* Contact Form Styles */
+        .contact form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 85%;
+            max-width: 700px;
+            margin: auto;
+              text-align: center; /* Center the form content */
+        }
+
+        .contact input[type="text"],
+        .contact input[type="email"],
+        .contact textarea {
+            width: 100%;
+            padding: 1.3rem;
+            margin: 0.8rem 0;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+            text-align: center; /* Center input field content */
+
+        }
+
+        .contact input[type="text"]:focus,
+        .contact input[type="email"]:focus,
+        .contact textarea:focus {
+            border-color: var(--primary-color);
+        }
+
+        .contact textarea {
+            height: 150px;
+        }
+
+        .contact button[type="submit"] {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            box-shadow: var(--box-shadow);
+            font-weight: bold;
+        }
+
+        .contact button[type="submit"]:hover {
+            background-color: #ffb3c6;
+            transform: scale(1.05);
+        }
+         /* Diet Section */
+        .diet{
+             width: 300px;
+              transition: transform 0.3s ease, box-shadow 0.3s ease;
+              color:black;
+              margin: 0 auto;
+             text-align: center;
+             display: flex; /* Use flexbox for the container */
+              justify-content: center; /* Horizontally center */
+             align-items: center;
+
+        }
+                /* Specific style for the link within the card */
+        .diet a {
+            text-decoration: none; /* Remove underline */
+            color: inherit; /* Use the color defined for the card or inherit from the parent */
+            display: block; /* Make the link fill the entire card */
+            padding: inherit; /* Inherit padding from service card */
+            border-radius: inherit; /* Inherit border-radius from service card */
+            width: 100%; /* Ensure link fills width */
+            height: 100%; /* Ensure link fills height */
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+             text-align: center; /* Center the text within the link */
+
+        }
+
+        /* Style the card's contents directly for centering */
+        .diet .service-container {
+            justify-content: center; /* Horizontally center */
+           align-items: center;
+           margin-top: 50px;
+           text-align: center; /* Center the container */
+        }
+
+        .diet a {
+            display: block;
+            text-align: center;
+           margin: 0 auto; /* Add automatic left and right margins */
+        }
+
+
+           #dietinfo{
+            text-align: center;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Style the contact form content for centering */
+       .contact form {
+            text-align: center;
+            margin-top: 50px; /* Add space before the form */
+        }
+
+        /* Style the game section content for centering */
+        .memory-game{
+          text-align: center;
+        }
+
+           .hero {
+                text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                float: none;
+                text-align: center;
+            }
+
+            .nav-links li {
+                float: none;
+                display: inline-block;
+            }
+
+            .service-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .service-card {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .game-container {
+                width: 100%;
+                max-width: 640px;
+                height: auto;
+                flex-direction: row;
+            }
+
+            .memory-card {
+                width: calc(50% - 10px);
+                height: 150px;
+            }
+
+            .hero h1 {
+                font-size: 3em;
+            }
+
+            .hero p {
+                font-size: 1.3em;
+            }
+
+            .cta-button {
+              margin: 0 auto;  Remove float and use margin to center
+                  display: inline-block;
+                  text-align: center;
+            }
+              /* Adjustments to diet section on smaller screens */
+              .diet .service-card a{
+                  text-align: center;
+                    margin: 0 auto;  Remove float and use margin to center
+            }
+        }
+
+        @keyframes fireworkExplosion {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+        .firework {
+            position: absolute;
+            border-radius: 50%;
+            background-color: gold;
+            width: 12px;
+            height: 12px;
+            animation: fireworkExplosion 1.5s ease-out forwards;
+        }
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">LIFELINE SHIELD</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#ai-chatbot">AI Chatbot</a></li>
+            <li><a href="#hospital-tracker">Hospital Tracker</a></li>
+            <li><a href="#memory-game">Memory Game</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <header id="home" class="hero">
+        <h1>Smart Senior Healthcare at Your Fingertips</h1>
+        <p>Empowering the Elderly with Accessible and Innovative Health Solutions</p>
+        <button id="get-started-button" class="cta-button">Explore the Shield</button>
+    </header>
+
+    <section id="services" class="services">
+        <h2>Discover Our Services</h2>
+        <div class="service-container">
+            <div class="service-card">
+                <h3>Virtual Doctor Visits</h3>
+                <p>Connect with qualified doctors online for convenient medical consultations.</p>
+            </div>
+            <div class="service-card">
+                <h3>Online Therapy Support</h3>
+                <p>Access licensed therapists via secure video sessions, providing mental and emotional support.</p>
+            </div>
+            <div class="service-card">
+                <h3>AI Health Companion</h3>
+                <p>Receive personalized health insights and reminders through our AI companion.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="ai-chatbot" class="chatbot">
+        <h2>24/7 AI Assistance</h2>
+        <p>Get instant health-related answers and support from our AI Chatbot anytime, anywhere.</p>
+        <a href="https://dxgpt.app/?gad_source=1&gclid=Cj0KCQiAwtu9BhC8ARIsAI9JHakegZeTMRxkHMo9TixgMQsWkvXC5D700gGNXcd_Wl2DnVzOGQZj9bUaAuKfEALw_wcB" target="_blank"><button id="chatbot-toggle" class="cta-button">Chat with Our AI</button></a>
+    </section>
+
+    <section id="hospital-tracker" class="hospital-tracker">
+        <h2>Find Hospitals Easily</h2>
+        <p>Locate nearby hospitals quickly for timely medical attention during emergencies.</p>
+        <button id="find-hospital" class="cta-button">Find Nearby Hospitals</button>
+        <div id="hospital-list"></div>
+    </section>
+
+    <section id="diet" class="diet">
+        <div class="service-container">
+            <div class="service-card">
+                <h3>  <a href="diet_info.html" style = "align-items:center;" class = "diet-info-card">Dietary Information</a></h3>
+                <p>Access verified dietary information.</p>
+               </div>
+        </div>
+    </section>
+
+    <section id="memory-game" class="memory-game">
+        <h2>Sharpen Your Mind</h2>
+        <p>Boost cognitive skills and memory with our engaging and fun memory game.</p>
+        <div class="game-container">
+            <!-- Memory Card -->
+            <div class="memory-card" data-framework="React">
+                <div class="front-face">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" alt="React" />
+                </div>
+                <div class="back-face">
+                    <img src="https://static.vecteezy.com/system/resources/previews/009/663/891/non_2x/shield-icon-transparent-free-png.png" alt="Shield" />
+                </div>
+            </div>
+               <!-- Memory Card -->
+            <div class="memory-card" data-framework="React">
+                <div class="front-face">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" alt="React" />
+                </div>
+                <div class="back-face">
+                    <img src="https://static.vecteezy.com/system/resources/previews/009/663/891/non_2x/shield-icon-transparent-free-png.png" alt="Shield" />
+                </div>
+            </div>
+
+            <!-- Memory Card -->
+            <div class="memory-card" data-framework="Angular">
+                <div class="front-face">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/AngularJS_logo.svg" alt="Angular" />
+                </div>
+                <div class="back-face">
+                    <img src="https://static.vecteezy.com/system/resources/previews/009/663/891/non_2x/shield-icon-transparent-free-png.png" alt="Shield" />
+                </div>
+            </div>
+               <!-- Memory Card -->
+            <div class="memory-card" data-framework="Angular">
+                <div class="front-face">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/AngularJS_logo.svg" alt="Angular" />
+                </div>
+                <div class="back-face">
+                    <img src="https://static.vecteezy.com/system/resources/previews/009/663/891/non_2x/shield-icon-transparent-free-png.png" alt="Shield" />
+                </div>
+            </div>
+
+            <!-- Memory Card -->
+            <div class="memory-card" data-framework="Vue">
+                <div class="front-face">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg" alt="Vue" />
+                </div>
+                <div class="back-face">
+                    <img src="https://static.vecteezy.com/system/resources/previews/009/663/891/non_2x/shield-icon-transparent-free-png.png" alt="Shield" />
+                </div>
+            </div>
+               <!-- Memory Card -->
+            <div class="memory-card" data-framework="Vue">
+                <div class="front-face">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg" alt="Vue" />
+                </div>
+                <div class="back-face">
+                    <img src="https://static.vecteezy.com/system/resources/previews/009/663/891/non_2x/shield-icon-transparent-free-png.png" alt="Shield" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <h2>Contact Our Support Team</h2>
+        <p>We're here to support your journey to better health. Get in touch with our team for any inquiries.</p>
+        <form>
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea placeholder="Your Message"></textarea>
+            <button type="submit"  style = "align-items:center; color:black;">Send Message</button>
+        </form>
+    </section>
+
+    <section id = "dietinfo" style = "text-align:center;">
+        <h2>My diet info</h2>
+        <ul>
+             <li>Sample Info: Eat 125g of carbs on the sample</li>
+         </ul>
+    </section>
+      <!-- Congratulations Message -->
+    <div id="congratulations" style="display:none;">
+        <h2>Congratulations! You Won!</h2>
+        <p>Excellent memory skills! Enjoy the fireworks!</p>
+        <div id="fireworks-container"></div>
+    </div>
+
+    <script>
+         // Function to generate fireworks
+        function generateFireworks() {
+            const container = document.getElementById('fireworks-container');
+            container.innerHTML = ''; // Clear existing fireworks
+            const numFireworks = 20;
+
+            for (let i = 0; i < numFireworks; i++) {
+                const firework = document.createElement('div');
+                firework.className = 'firework';
+                container.appendChild(firework);
+
+                // Random positioning and animation properties
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                const size = Math.random() * 8 + 4; // Size between 4px and 12px
+                const delay = Math.random() * 2; // Animation delay
+
+                firework.style.left = ${x}px;
+                firework.style.top = ${y}px;
+                firework.style.width = ${size}px;
+                firework.style.height = ${size}px;
+                firework.style.animationDelay = ${delay}s;
+             }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+               // Hospitals Near Me Functionality (Redirect to Google Maps)
+            const findHospitalButton = document.getElementById('find-hospital');
+
+            findHospitalButton.addEventListener('click', function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        const googleMapsUrl = https://www.google.com/maps/search/hospitals/@${latitude},${longitude},15z;
+                        window.open(googleMapsUrl, '_blank'); // Open in a new tab
+                    }, function(error) {
+                         alert("Could not get your location. Please make sure to enable location services.") //Properly handle geolocation error
+                    });
+                } else {
+                    alert("Geolocation is not supported by your browser.");
+                }
+            });
+               // JavaScript to trigger the redirection
+        const dietInfoCard = document.querySelector('.diet a'); // Target the anchor tag inside the service card
+
+          if(dietInfoCard){
+              dietInfoCard.addEventListener('click', function(event) {
+                  event.preventDefault(); // Prevent the default link behavior
+                  window.location.href=this.getAttribute('href'); // Get the value of the href attribute
+                });
+          }
+            // Memory Game Functionality
+            const memoryCards = document.querySelectorAll('.memory-card');
+            let hasFlippedCard = false;
+            let lockBoard = false;
+            let firstCard, secondCard;
+            let matchedCardsCount = 0;  //Counter for matched cards
+
+             function flipCard() {
+                if (lockBoard) return;
+                if (this === firstCard) return; // Prevent clicking the same card twice
+
+                this.classList.add('flip');
+
+                if (!hasFlippedCard) {
+                    // First card click
+                    hasFlippedCard = true;
+                    firstCard = this;
+                    return;
+                }
+
+                // Second card click
+                secondCard = this;
+                checkForMatch();
+            }
+  // New Code to detect is all card are matched  or not
+            function checkForMatch() {
+                let isMatch = firstCard.dataset.framework === secondCard.dataset.framework;
+
+                isMatch ? disableCards() : unflipCards();
+            }
+
+            function disableCards() {
+                firstCard.removeEventListener('click', flipCard);
+                secondCard.removeEventListener('click', flipCard);
+
+                matchedCardsCount += 2;   //Increment matched cards count
+                if (matchedCardsCount === memoryCards.length) { //All cards matched?
+                    gameWon(); //Show the winning message
+                 }
+                resetBoard();
+            }
+
+            function unflipCards() {
+                lockBoard = true;
+
+                setTimeout(() => {
+                    firstCard.classList.remove('flip');
+                    secondCard.classList.remove('flip');
+
+                    resetBoard();
+                }, 1000);
+            }
+
+            function resetBoard() {
+                [hasFlippedCard, lockBoard] = [false, false];
+                [firstCard, secondCard] = [null, null];
+            }
+//New Code to randomize the card positions
+            (function shuffle() {
+                memoryCards.forEach(card => {
+                    let randomPos = Math.floor(Math.random() * 12); // 12 cards
+                    card.style.order = randomPos;
+                });
+            })();
+//New Code
+            memoryCards.forEach(card => card.addEventListener('click', flipCard));
+
+            function gameWon() {
+                const congratulations = document.getElementById('congratulations');
+                congratulations.style.display = 'block'; //Show congratulatory message
+                generateFireworks();  //Starts the fireworks
+                 setTimeout(function() {
+                    congratulations.style.display = 'none';
+                  //Clear fireworks after congrats
+                    const container = document.getElementById('fireworks-container');
+                    container.innerHTML = '';  //Clears the fireworks
+                 }, 5000);
+              }
+        });
+    </script>
+   <div id="fireworks-container"></div>
+
+    <section id = "dietinfo" style = "text-align:center;">
+        <h2>My diet info</h2>
+        <ul>
+             <li>Sample Info: Eat 125g of carbs on the sample</li>
+         </ul>
+    </section>
+      <!-- Congratulations Message -->
+    <div id="congratulations" style="display:none;">
+        <h2>Congratulations! You Won!</h2>
+        <p>Excellent memory skills! Enjoy the fireworks!</p>
+        <div id="fireworks-container"></div>
+    </div>
+
+    <section id="contact" class="contact">
+        <h2>Contact Us</h2>
+        <form>
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea placeholder="Your Message"></textarea>
+            <button type="submit"  style = "align-items:center; color:black;">Send Message</button>
+        </form>
+    </section>
+
+   <div id="fireworks-container"></div>
+</body>
+
+</html>
